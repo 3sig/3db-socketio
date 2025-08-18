@@ -4,14 +4,24 @@
     {
       name: "3db",
       source: "3sig/3suite-db",
+
       sourceActions: [{ type: "chmod" }],
+
+
+      // uncomment the following lines to use the local build
+      //sourceType: "local",
+      //localPath: "../../3suite/3suite-db",
+
+
       config: {
+        verbose: true,
         plugins: [
             {
                 name: "template",
                 path: "3db/template.js",
                 config: {
-                    serverUrl: "localhost:6000"
+                    serverUrl: "localhost:6000",
+                    socketioPrefix: "3db/"
                 }
             }
         ]
