@@ -7,5 +7,8 @@
     "start": "bun build main.js --outdir build --target node && bun run install-deps && bun run run",
     "install-deps": "orchestrator-install",
     "run": "cd orchestrator-deps && ./3suite-orchestrator*"
+  },
+  "dependencies": {
+    "socket.io-client": "^4.8.1"
   }
 }

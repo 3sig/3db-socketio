@@ -11,11 +11,19 @@
                 name: "template",
                 path: "3db/template.js",
                 config: {
-                    hello: "world"
+                    serverUrl: "localhost:6000"
                 }
             }
         ]
       }
+    },
+    {
+        name: "3suite-socketio",
+        source: "3sig/3suite-socketio",
+        sourceActions: [{ type: "chmod" }],
+        config: {
+          port: 6000,
+        }
     },
     {
         name: "template",
