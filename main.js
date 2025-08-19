@@ -67,4 +67,5 @@ async function emitUpdate(config, runApi, id, data) {
       console.error("[socketio] Error emitting update:", error);
     }
   }
+  return data;
 }
