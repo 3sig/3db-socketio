@@ -1,0 +1,40 @@
+name: create executables
+run-name: build for commit "${{ github.event.head_commit.message }}" (${{ github.sha }})
+on: [push]
+permissions:
+  contents: write
+jobs:
+  build:
+    name: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+      - name: Set short git commit SHA
+        id: vars
+        run: |
+          calculatedSha=$(git rev-parse --short ${{ github.sha }})
+          echo "COMMIT_SHORT_SHA=$calculatedSha" >> $GITHUB_ENV
+      - uses: oven-sh/setup-bun@v2
+      - run: bun install
+      - name: Build
+        run: bun build main.js --target node --outdir . --entry-naming [dir]/${{ github.event.repository.name }}_${{ env.COMMIT_SHORT_SHA }}.js
+      - name: Upload build
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ github.event.repository.name }}_${{ env.COMMIT_SHORT_SHA }}.js
+          path: ${{ github.event.repository.name }}_${{ env.COMMIT_SHORT_SHA }}.js
+      - run: mv ${{ github.event.repository.name }}_${{ env.COMMIT_SHORT_SHA }}.js ${{ github.event.repository.name }}_${{ github.ref_name }}.js
+        if: startsWith(github.ref, 'refs/tags/')
+      - run: |
+          tagAnnotationMessage=$(git for-each-ref refs/tags/${{  github.ref_name }} --format='%(contents)')
+          echo "TAG_ANNOTATION_MESSAGE=$tagAnnotationMessage" >> $GITHUB_ENV
+        if: startsWith(github.ref, 'refs/tags/')
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          body: ${{ env.TAG_ANNOTATION_MESSAGE }}
+          files: |
+            ${{ github.event.repository.name }}_${{  github.ref_name }}.js
