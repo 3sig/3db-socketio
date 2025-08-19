@@ -1,5 +1,5 @@
 {
-  "name": "3db-template",
+  "name": "3db-socketio",
   "version": "0.0.0",
   "devDependencies": {
     "3lib-orchestrator": "github:3sig/3lib-orchestrator",
