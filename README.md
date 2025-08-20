@@ -1,19 +1,24 @@
-# 3suite
+# 3db-socketio
 
-this repository serves as a template for 3suite-db plugins. as of writing, it includes:
+a 3db plugin to enable socket.io communication to and from 3db.
 
-- 3lib-orchestrator setup to test the plugin
-- workflow actions for automated building and releasing via tags
-
-see [3suite-db](https://github.com/3sig/3suite-db) for more information.
+see [3suite-db](https://github.com/3sig/3suite-db) for more information, including installation instructions.
 
 ## usage
 
-### creating a new project
+see `orchestrator.json5` for annotated configuration details.
 
-fork the repository--any changes that we make to the build workflows should be merged upstream to this template.
+3db-socketio *does not* host its own socketio server, it connects to one. see [3suite-socketio](https://github.com/3sig/3suite-socketio) for a simple server.
 
-enable workflows in github so that the build workflows can run.
+3db-socketio passes through all messages received from the socketio server to the 3db instance. it also sends messages to the socketio server whenever a database entry is changed or added, or whenever a database entry is accessed. this means you can send a `core/get` message to retrieve a database entry.
+
+3db-socketio currently supports up to two parameters. the first parameter is inferred from the message type, and the second parameter is the data sent in. for example, to write "world" to "hello", send a `core/update/hello` message with "world" as the data.
+
+to read back the "hello" entry, simply send `core/get/hello` with no data.
+
+3db-socketio currently doesn't add any additional APIs.
+
+## development
 
 ### creating a release
 
