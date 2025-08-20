@@ -17,8 +17,9 @@
         verbose: true,
         plugins: [
             {
-                name: "template",
-                path: "3db/template.js",
+                name: "socketio",
+                path: "3db/socketio.js",
+
                 config: {
                     serverUrl: "localhost:6000",
                     socketioPrefix: "3db/"
@@ -36,14 +37,15 @@
         }
     },
     {
-        name: "template",
+        name: "socketio",
         sourceType: "local",
         localPath: "./build",
         sourceFileType: "pattern-match",
         sourceFilePattern: "main.js",
         sourceExclude: true,
         sourceActions: [
-          { type: "move", location: "./3db", filename: "template.js" }
+        // update naming for your plugin here
+          { type: "move", location: "./3db", filename: "socketio.js" }
         ],
     },
   ]
