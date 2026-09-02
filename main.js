@@ -71,17 +71,14 @@ async function onInitialize(config, runApi) {
       const originalEventName = eventName;
       eventName = eventName.slice(config.socketioPrefix?.length || 0);
 
-      let [plugin, api, ...target] = eventName.split("/");
-      eventName = plugin + "/" + api;
-      target = target.join("/");
 
-      console.log("[socketio] Processing API call:", eventName, "target:", target);
+      console.log("[socketio] Processing API call:", eventName);
       if (config.verbose) {
-        console.log("[socketio] API call details - original event:", originalEventName, "parsed plugin:", plugin, "parsed api:", api, "parsed target:", target, "data:", data);
+        console.log("[socketio] API call details - original event:", originalEventName, "data:", data);
         console.log("[socketio] Calling runApi...");
       }
 
-      await runApi(eventName, target, data);
+      await runApi(eventName, ...data);
 
       if (config.verbose) {
         console.log("[socketio] API call completed successfully");
