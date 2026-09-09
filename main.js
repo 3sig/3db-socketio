@@ -3,7 +3,16 @@ import { io } from "socket.io-client";
 export {
   onInitialize,
   emitUpdate as onUpdate,
-  emitUpdate as onGet
+  emitUpdate as onGet,
+  _reset
+}
+
+function _reset() {
+  if (socket) {
+    socket.removeAllListeners();
+    socket.close();
+  }
+  socket = undefined;
 }
 
 let socket;
@@ -53,7 +62,7 @@ async function onInitialize(config, runApi) {
     }
   });
 
-  socket.onAny(async (eventName, data) => {
+  socket.onAny(async (eventName, ...data) => {
     console.log("[socketio] Received event:", eventName);
     if (config.verbose) {
       console.log("[socketio] Event data:", data);
